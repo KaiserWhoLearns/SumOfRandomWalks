@@ -15,7 +15,17 @@ singleRandomWalk <- function(n, steps) {
 
 # @para: n and steps are vars for singleRW
 # times is the times of simulation we do
+# Return the index where largest value happens
 # 10/06/2019
 massiveSimulation <- function(n, steps, times) {
-
+    walks <- singleRandomWalk(n, steps)
+    index <- match(max(walks), walks)
+    result <- c(index)
+    for (i in 2:times) {
+        # remember that R vectors index starts at 1
+        walks <- singleRandomWalk(n, steps)
+        index <- match(max(walks), walks)
+        result <- c(result, index)
+    }
+    return(result)
 }
