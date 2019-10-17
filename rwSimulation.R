@@ -29,3 +29,26 @@ massiveSimulation <- function(n, steps, times) {
     }
     return(result)
 }
+
+# @para: n and steps are vars for singleRW
+# times is the times of simulation we do
+# return the number of max appears in each simulation
+# 10/17/2019
+countMax <- function(n, steps, times) {
+    walks <- singleRandomWalk(n, steps)
+    count <- sum(max(walks)==walks)
+    result <- c(count)
+    for (i in 2:times) {
+        # remember that R vectors index starts at 1
+        walks <- singleRandomWalk(n, steps)
+        count <- sum(walks == max(walks))
+        result <- c(result, count)
+    }
+    frequent <- sum(result == 1)
+    stat <- c(frequent)
+    for (i in 2:max(result)) {
+        frequent <- sum(result == i)
+        stat <- c(stat, frequent)
+    }
+    return(stat)
+}

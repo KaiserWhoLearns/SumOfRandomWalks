@@ -16,13 +16,19 @@ steps <- c(-1, 1)
 # Steps we will do in a random walk
 n <- 10000;
 # Number of simulations
-times <- 1000;
+times <- 10000;
 
 # Simulation of first random walk
 # Uncomment it to see how a single random walk will look like
 # walks <- c(singleRandomWalk(n, steps))
 # plotWalk <- data.frame(seq_along(walks), walks)
 # ggplot(plotWalk, aes(x = seq_along(walks), y = walks)) + geom_bar(stat = "identity")
+
+# Now we count the number of maximum appears in each simulation
+maxStat <- countMax(n, steps, times)
+plotMaxStat <- data.frame(seq_along(maxStat), maxStat)
+length <- length(maxStat)
+# Plot the max statistic
 
 # Now we want to sumulate a large number of times of RW
 sim <- massiveSimulation(n, steps, times)
