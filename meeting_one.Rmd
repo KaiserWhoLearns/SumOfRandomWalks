@@ -1,0 +1,190 @@
+---
+title: "WXML_1"
+author: "Anni Hong"
+date: "10/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+source("./ran_wlk_exp_helpers.r")
+options(scipen=999)
+require(ggplot2)
+```
+
+```{r}
+# try walk length = 10, 100, 1000, 10,000
+WLK_LENGTHS <- seq(1:500)
+NUM_TRIALS <- 1000
+prob_0 <- c()
+for (wlk_len in WLK_LENGTHS) {
+  res_matrix <- experiment(wlk_len, 1, c(0.5, 0.5), FALSE, NUM_TRIALS)
+  prob_by_points <- calc_argmax_prob(res_matrix)
+  #prob_by_ends <- sum_prob_endpoints(prob_by_points, wlk_len, NUM_TRIALS) 
+  #print(round(prob_by_ends, 4))
+  #print(prob_by_points[[1]])
+  prob_0 <- c(prob_0,prob_by_points[[1]])
+}
+
+Ln_prob <- log(prob_0)
+Ln_N <- log(WLK_LENGTHS)
+
+plot(WLK_LENGTHS, prob_0)
+plot(Ln_prob,Ln_N)
+
+reg_coef <- lm(Ln_prob~Ln_N)$coefficients
+c <- exp(reg_coef[[1]])
+a <- -reg_coef[[2]] 
+
+print(c("c = ", c, "a = ", a))
+N = 1000
+prob = c/(N^(a))
+print(c("probability of argmax = 0, N = ", N , " Prob= ", prob))
+# cat("lazy random walk/n")
+# 
+# for (wlk_len in WLK_LENGTHS) {
+#   res_matrix <- experiment(wlk_len, 1,rep((1/3),3), TRUE, NUM_TRIALS)
+#   prob_by_points <- calc_argmax_prob(res_matrix)
+#   prob_by_ends <- sum_prob_endpoints(prob_by_points, wlk_len, NUM_TRIALS) 
+#   print(round(prob_by_ends, 4))
+# }
+
+```
+# distribution of argmaxs when it's asymmetric 
+```{r}
+prob_argmax_k <- function(p,k) {
+  q = (1 - p)
+    p_i <- ceiling(k/2)
+    q_i <- k - p_i
+    res <- p^(p_i)*q^(q_i)
+    print(res)
+} 
+
+
+WLK_LENGTH <- 100
+NUM_TRIALS <- 10000
+
+res <- numeric(NUM_TRIALS)
+for (i in 1:NUM_TRIALS) {
+  walk <- random_walk(WLK_LENGTH, 1, prob = c(0.5, 0.5), lazy = F)
+  res[i] <- num_argmax(walk = walk)
+}
+experimental_prob <- table(res)/NUM_TRIALS
+plot(table(res)/NUM_TRIALS)
+
+
+```
+
+
+```{r}
+# try walk length = 10, 100, 1000, 10,000
+WLK_LENGTHS <- c(10, 100, 1000, 2000)
+NUM_TRIALS <- 1000
+
+for (wlk_len in WLK_LENGTHS) {
+  res_matrix <- experiment(length_n=wlk_len, step_size=1, prob=c(1/2, 1/2), lazy=F, trials_n=NUM_TRIALS)
+  prob_by_points <- calc_argmax_prob(res_matrix)
+  prob_by_ends <- sum_prob_endpoints(prob_by_points, wlk_len, NUM_TRIALS) 
+  print(round(prob_by_ends, 4))
+}
+
+```
+
+
+
+```{r }
+WLK_LENGTH <- 10 # walk length is 1 million
+NUMS_OF_TRIALS <- 100000
+
+res_matrix <- experiment(WLK_LENGTH, 1, 0.1, NUMS_OF_TRIALS)
+prob_by_points <- calc_argmax_prob(res_matrix)
+prob_by_points <- as.data.frame(prob_by_points)
+
+scatter.smooth(x=prob_by_points$argmax, y =prob_by_points$Freq, family = "gaussian", span = 1/3, degree = 2, 
+               xlab = "ith_step", ylab = "Probability of argmax at i",col="#CCCCCC")
+```
+```{r }
+WLK_LENGTH <- 100 # walk length is 1 million
+NUMS_OF_TRIALS <- 10000
+
+res_matrix <- experiment(WLK_LENGTH, 1, 0.5, NUMS_OF_TRIALS)
+prob_by_points <- calc_argmax_prob(res_matrix)
+prob_by_points <- as.data.frame(prob_by_points)
+
+scatter.smooth(x=prob_by_points$argmax, y =prob_by_points$Freq, family = "gaussian", span = 1/3, degree = 2, 
+               xlab = "ith_step", ylab = "Probability of argmax at i",col="#CCCCCC")
+
+```
+```{r }
+WLK_LENGTH <- 1000 # walk length is 1 million
+NUMS_OF_TRIALS <- 1000
+
+res_matrix <- experiment(WLK_LENGTH, 1, 0.5, NUMS_OF_TRIALS)
+prob_by_points <- calc_argmax_prob(res_matrix)
+prob_by_points <- as.data.frame(prob_by_points)
+
+scatter.smooth(x=prob_by_points$argmax, y =prob_by_points$Freq, family = "gaussian", span = 1/3, degree = 2, 
+               xlab = "ith_step", ylab = "Probability of argmax at i",col="#CCCCCC")
+```
+
+```{r }
+WLK_LENGTH <- 10000 # walk length is 1 million
+NUMS_OF_TRIALS <- 1000
+
+res_matrix <- experiment(WLK_LENGTH, 1, 0.5, NUMS_OF_TRIALS)
+
+prob_by_points <- calc_argmax_prob(res_matrix)
+prob_by_points <- as.data.frame(prob_by_points)
+
+scatter.smooth(x=prob_by_points$argmax, y =prob_by_points$Freq, family = "gaussian", span = 1/3, degree = 2, 
+               xlab = "ith_step", ylab = "Probability of argmax at i",col="#CCCCCC")
+```
+
+Meeting 2
+take log of P(0) to get linear relationship and then find the slope and intersection
+plot the distribution 
+the probability of seeing k argmax is 2^(-k) --> prove 
+number of argmaxs as p changes \
+
+
+```{r}
+# try walk length = 10, 100, 1000, 10,000
+WLK_LENGTHS <- c(10, 100)
+NUM_TRIALS <- 10
+
+for (wlk_len in WLK_LENGTHS) {
+  res_matrix <- experiment(length_n=wlk_len, step_size=1, trials_n=NUMS_OF_TRIALS)
+  prob_by_points <- calc_argmax_prob(res_matrix)
+  prob_by_ends <- sum_prob_endpoints(prob_by_points, wlk_len, NUM_TRIALS) 
+  print(round(prob_by_ends[[1]], 4))
+}
+```
+
+
+
+```{r}
+WLK_LENGTHS <- seq(1, 1000)
+NUM_TRIALS <- 100
+
+prob_0 <- c()
+for (wlk_len in WLK_LENGTHS) {
+  res_matrix <- experiment(length_n=wlk_len, step_size=1, trials_n=NUM_TRIALS)
+  prob_by_points <- calc_argmax_prob(res_matrix)
+  prob_0 <- c(prob_by_points[[1]], prob_0)
+}
+#prob_0 <- prob_0[-1]
+Ln_prob <- log(prob_0)
+Ln_N <- log(WLK_LENGTHS)
+
+reg_coef <- lm(Ln_prob~Ln_N)$coefficients
+c <- exp(reg_coef[[1]])
+a <- reg_coef[[2]] 
+
+```
+
+
+
