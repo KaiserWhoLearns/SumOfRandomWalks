@@ -25,9 +25,9 @@ times <- 10000;
 # ggplot(plotWalk, aes(x = seq_along(walks), y = walks)) + geom_bar(stat = "identity")
 
 # Now we count the number of maximum appears in each simulation
-maxStat <- countMax(n, steps, times)
-plotMaxStat <- data.frame(seq_along(maxStat), maxStat)
-length <- length(maxStat)
+# maxStat <- countMax(n, steps, times)
+# plotMaxStat <- data.frame(seq_along(maxStat), maxStat)
+# length <- length(maxStat)
 # Plot the max statistic
 
 # Now we want to sumulate a large number of times of RW
@@ -42,6 +42,6 @@ plotSim <- data.frame(seq_along(sim), sim)
 ggplot(plotSim, aes(sim)) + geom_histogram(breaks=seq(1, n, by = 50), 
                  aes(fill=..count..)) +
   scale_fill_gradient("Count", low = "blue", high = "black") +
-  xlab("Step of Walks") + ylab("Times Max Located") + 
-  ggtitle("Count of largest indices")
+  xlab("Steps of Walk") + ylab("Distance walked") + 
+  ggtitle("Maximum")
 
