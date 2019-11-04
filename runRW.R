@@ -30,7 +30,7 @@ times <- 10000;
 # length <- length(maxStat)
 # Plot the max statistic
 
-# Now we want to sumulate a large number of times of RW
+# Now we want to simulate a large number of times of RW
 sim <- massiveSimulation(n, steps, times)
 plotSim <- data.frame(seq_along(sim), sim)
 # Plot the count of each index

@@ -8,7 +8,7 @@
 # 10/06/2019
 singleRandomWalk <- function(n, steps) {
     # Uncomment this line to get reproducilbe results
-    set.seed(1)
+ #    set.seed(1)
     walks <- cumsum(sample(steps, n, TRUE, prob = c(1, 1)))
     return(walks)
 }
