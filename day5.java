@@ -13,7 +13,10 @@ public class day5 {
         for (int i = 1; i <= 1000; i++) {
             result.put(i, negKProbability(TRIALS, INITIAL_VALUE, i, rand));
         }
-        System.out.println(result);
+        for (int ks : result.keySet()) {
+            System.out.println(ks + ", " + result.get(ks));
+        }
+        // System.out.println(result);
     }
 
     // sum is the sum of current random walk
