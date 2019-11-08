@@ -16,7 +16,9 @@ sInverse = matrix([[0, 0, 0, 1], [0, 0, 1, 0],
 [-math.sqrt(3)/4, 0.5, math.sqrt(3)/4*(0.5 - math.sqrt(3)/2), math.sqrt(3)/4*(0.5 - 1/(2*math.sqrt(3)))],
 [math.sqrt(3)/4, 0.5, math.sqrt(3)/4*(-0.5 - math.sqrt(3)/2), math.sqrt(3)/4*(-0.5 - 1/(2*math.sqrt(3)))]])
 start = matrix([[1], [0], [0], [0]])
+start2 = matrix([1, 0, 0, 0])
 print S*matrix_power(J, n)*sInverse*start
+print start2*S*matrix_power(J, n)*sInverse
 
 print "Jordan mult"
 print S*matrix_power(J, n)*sInverse
