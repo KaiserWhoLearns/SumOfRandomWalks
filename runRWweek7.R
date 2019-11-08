@@ -19,7 +19,7 @@ n <- 10000;
 times <- 10000;
 
 # the number of time where s(t) > 0 occurs
-sim <- simulation2(n, steps, times, 2)
+sim <- simulation2(n, steps, times, 1)
 
 count = 0
 for (i in 1 : length(sim)) {

@@ -22,6 +22,7 @@ simulation2 <- function(n, steps, times, j) {
     # }
     result <- c(hasJPos(walk, j) && max(walk) == 0)
     for (i in 2 : times) {
+        
         walk <- singleRandomWalk(n, steps)
         result <- c(result, hasJPos(walk, j) && max(walk) == 0)
     }
@@ -32,7 +33,7 @@ hasJPos <- function(walk, j) {
     count <- 0
     for (i in 1 : length(walk)) {
         if (walk[i] == 0) {
-            count = count + 1;
+            count = count + 1
         }
     }
     return(count==j)
