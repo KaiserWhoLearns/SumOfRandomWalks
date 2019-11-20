@@ -38,7 +38,9 @@ def sum_random_walk(trial, X, epoch):
 if __name__== "__main__":
     # Genderate a randomwalk X
     X = single_random_walk(200)
-    # print(X)
+    print("The known random walk")
+    print(X)
     # Sum up the random walk
+    print("Where maximums happens most: ")
     print(sum_random_walk(200, X, 200))
     # print(random_walk(10000, 10000))
