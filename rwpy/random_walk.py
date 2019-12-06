@@ -39,8 +39,10 @@ if __name__== "__main__":
     # Genderate a randomwalk X
     X = single_random_walk(200)
     print("The known random walk")
-    print(X)
+    print(X[0][0])
+    # print(np.where(X == np.amax(X[0][0])))
     # Sum up the random walk
     print("Where maximums happens most: ")
     print(sum_random_walk(200, X, 200))
     # print(random_walk(10000, 10000))
+    # Try doing maximum likelyhood estimation
