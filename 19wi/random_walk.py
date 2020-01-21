@@ -1,6 +1,8 @@
 #%%
 import numpy as np
 import matplotlib.pyplot as plt
+import concurrent.futures
+import time
 
 # Generate a normal distributed random walk
 # (Each step to be Normal(0, 1))
@@ -28,11 +30,10 @@ def monteCarlo(numOfX, numOfY, numOfStep):
             if (np.where(tempX == np.amax(tempX)) == argmax):
                 # argmax at X max
                 res[2] += 1
-            # TODO: count the case where argmax(X) == end points
-            elif (argmax[0] == 0):
+            if (argmax[0] == 0):
                 # argmax at left endpoint
                 res[1] += 1
-            elif (argmax[0] == numOfStep - 1):
+            if (argmax[0] == numOfStep - 1):
                 # argmax at right endpoint
                 res[3] += 1
     res /= numOfX * numOfY
@@ -42,8 +43,16 @@ def monteCarlo(numOfX, numOfY, numOfStep):
     return res
 
 if __name__== "__main__":
-    ans = monteCarlo(100, 1000, 10000)
-    print(ans)
+    start = time.time()
+    # ans = monteCarlo(2000, 10, 1000)
+    res = np.zeros(4)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
+        # for i in range(0, 5):
+        future = executor.submit(monteCarlo, 2000, 10, 1000)
+        res += future.result()
+        print(res/5)
+    end = time.time()
+    print(end - start)
 
 
 # %%
