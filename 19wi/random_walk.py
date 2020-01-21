@@ -28,6 +28,7 @@ def monteCarlo(numOfX, numOfY, numOfStep):
             if (np.where(tempX == np.amax(tempX)) == argmax):
                 # argmax at X max
                 res[2] += 1
+            # TODO: count the case where argmax(X) == end points
             elif (argmax[0] == 0):
                 # argmax at left endpoint
                 res[1] += 1
@@ -41,7 +42,7 @@ def monteCarlo(numOfX, numOfY, numOfStep):
     return res
 
 if __name__== "__main__":
-    ans = monteCarlo(10, 10000, 10000)
+    ans = monteCarlo(100, 1000, 10000)
     print(ans)
 
 
