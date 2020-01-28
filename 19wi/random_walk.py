@@ -12,6 +12,24 @@ def single_random_walk(numOfStep):
     walks = np.cumsum(steps, axis=0)
     return walks
 
+def single_random_walk_optimized(numOfStep, numOfX):
+    steps = np.random.normal(0, 1, (2*numOfX, numOfStep))
+    # print(steps)
+    walks = np.cumsum(steps, axis=1)
+    return walks
+
+def monte_carlo_optimized(numOfStep, numOfX):
+    walks = single_random_walk_optimized(numOfStep, numOfX)
+    sums = np.add(walks[:numOfX, :], walks[numOfX:, :])
+
+    sum_argmaxs = np.argmax(sums, axis=1)
+    walks_argmaxs = np.argmax(walks[:numOfX, :], axis=1)
+    print(np.count_nonzero(sum_argmaxs == 0))
+    print(np.count_nonzero(sum_argmaxs == numOfStep - 1))
+    print(np.count_nonzero(sum_argmaxs == walks_argmaxs))
+    # plt.plot(walks_argmaxs)
+    # plt.show()
+
 # Do a Monte Carlo Simulation
 # @Para: numOfX: the number of times generating X
 # numOfY: nubmer of times generating Y for each X
@@ -42,15 +60,18 @@ def monteCarlo(numOfX, numOfY, numOfStep):
     res[0] = numOfY
     return res
 
-if __name__== "__main__":
+if __name__ == "__main__":
     start = time.time()
-    # ans = monteCarlo(2000, 10, 1000)
-    res = np.zeros(4)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
-        # for i in range(0, 5):
-        future = executor.submit(monteCarlo, 2000, 10, 1000)
-        res += future.result()
-        print(res/5)
+    # # ans = monteCarlo(200000, 10, 1000)
+    # res = np.zeros(4)
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
+    #     # for i in range(0, 5):
+    #     future = executor.submit(monteCarlo, 10000, 10, 1000)
+    #     res += future.result()
+    #     # print(res/5)
+    # end = time.time()
+    #monteCarlo(5,5,5)
+    monte_carlo_optimized(1000, 100000)
     end = time.time()
     print(end - start)
 
