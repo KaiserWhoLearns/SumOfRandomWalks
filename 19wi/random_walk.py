@@ -61,8 +61,11 @@ def exp(x, a, b, c):
 def exp2(x, a, b):
     return a * np.exp(-b * x)
 
-def pol(x, a, b):
-    return a * (x ** b)
+def exp3(x, a, b, c):
+    return a * np.power(x + c, b)
+
+def invp(x, a):
+    return a / x
 
 # The argmax(X) = numOfStep / 2 in this case
 # The maximum value is sqrt(n)
@@ -78,18 +81,18 @@ def specialXSimulation(numOfStep, numOfY, c):
     difference = np.arange(numOfStep + 1) # x-axis
     # Original plot
     plt.plot(difference, count, 'b-', label="original plot")
-    # Exponential fit
-    popt_exp, pcov_exp = curve_fit(exp, difference, count)
-    print("Exponential fit parameters: ", popt_exp)
-    plt.plot(difference, exp(difference, *popt_exp), 'g--', label="exponential fit")
+    # Exponential fit3
+    popt_exp3, pcov_exp3 = curve_fit(exp3, difference, count)
+    print("Exponential fit3 parameters: ", popt_exp3)
+    plt.plot(difference, exp3(difference, *popt_exp3), 'g--', label="exponential fit")
     # Exponential fit2
     popt_exp2, pcov_exp2 = curve_fit(exp2, difference, count)
     print("Exponential fit2 parameters: ", popt_exp2)
     plt.plot(difference, exp2(difference, *popt_exp2), 'r--', label="exponential fit2")
-    # Polynomial fit
-    # popt_pol, pcov_pol = curve_fit(pol, difference, count)
-    # print("Polynomial fit parameters: ", popt_pol)
-    # plt.plot(difference, pol(difference, *popt_pol), 'r-', label="polynomial fit")
+    # # Polynomial fit
+    # popt_invp, pcov_invp = curve_fit(invp, difference, count)
+    # print("Inversely Propotional fit parameters: ", popt_invp)
+    # plt.plot(difference, invp(difference, *popt_invp), 'r-', label="inversely proportional fit")
     plt.show()
 
 
@@ -157,7 +160,7 @@ if __name__ == "__main__":
     # end = time.time()
     # monteCarlo(5,5,5)
     # monte_carlo_optimized(1000, 1000000)
-    specialXSimulation(1000, 100000, 1)
+    specialXSimulation(10000, 100000, 1)
     end = time.time()
     print("Time used: ", end - start, "seconds")
 
